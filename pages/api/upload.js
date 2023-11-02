@@ -1,16 +1,16 @@
 import multiparty from 'multiparty'
-import {PutObjectCommand, S3Client} from '@aws-sdk/client-s3'
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 const bucketName = 'elle-next-s3'
 
-export default async function handle(req, res){
-    
+export default async function handle(req, res) {
+
     const form = new multiparty.Form()
-    const {fields,files} = await new Promise((resolve, reject) => {
+    const { fields, files } = await new Promise((resolve, reject) => {
         form.parse(req, (err, fields, files) => {
-            if(err){
+            if (err) {
                 reject(err)
             }
-            resolve({fields, files})
+            resolve({ fields, files })
         })
     })
     const client = new S3Client({
@@ -21,18 +21,18 @@ export default async function handle(req, res){
         }
     })
 
-    for(const file of files.file){
+    for (const file of files.file) {
         const ext = file.originalFilename.split('.').pop()
-        console.log({ext, file})
+        console.log({ ext, file })
         const newFilename = Date.now() + '.' + ext
         await client.send(new PutObjectCommand({
             Bucket: bucketName,
             Key: newFilename,
         }))
-        
+
     }
 }
 
 export const config = {
-    api: {bodyParser: false}
+    api: { bodyParser: false }
 }
