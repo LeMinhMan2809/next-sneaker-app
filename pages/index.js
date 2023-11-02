@@ -3,9 +3,10 @@
 import { useSession } from "next-auth/react"
 // const inter = Inter({ subsets: ['latin'] })
 import Layout from "@/components/Layout"
+import HomeStats from "@/components/HomeStats"
 
 export default function Home() {
-   const {data: session} = useSession()
+   const { data: session } = useSession()
    return (
       <Layout>
          <div className="flex text-black-500 justify-between ">
@@ -15,8 +16,8 @@ export default function Home() {
                <img className="w-6 h-6" src={session?.user?.image} />
                <span className="px-2">{session?.user?.email}</span>
             </div>
-
          </div>
+         <HomeStats />
       </Layout>
    )
 }
