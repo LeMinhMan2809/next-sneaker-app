@@ -22,7 +22,6 @@ export default function Products() {
                         <th>Brand</th>
                         <th>Title</th>
                         <th>Description</th>
-                        <th>Images</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -33,7 +32,6 @@ export default function Products() {
                             <td>{product.brand}</td>
                             <td>{product.title}</td>
                             <td>{product.description}</td>
-                            <td className="flex justify-center items-center border-none"><img src={product.images[0]} className="w-16 flex justify-center items-center"></img></td>
                             <td>
                                 <Link href={'./products/edit/' + product._id}>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 pt-1">
