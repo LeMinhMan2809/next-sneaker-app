@@ -25,7 +25,7 @@ export default function Products() {
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="text-center">
                     {products.map(product => (
                         <tr key={product._id}>
                             <td><img src={product.images[0]} className="w-[200px] h-[200px]"></img></td>
