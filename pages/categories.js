@@ -1,12 +1,14 @@
 import Layout from "@/components/Layout";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import { withSwal } from "react-sweetalert2";
 
-export default function Categories () {
+function Categories ({swal}) {
     const [editedCategory, setEditedCategory] = useState(null)
     const [name, setName] = useState('')
     const [parentCategory, setParentCategory] = useState('')
     const [categories, setCategories] = useState([])
+
     useEffect(()=> {
        fetchCategories()
 },[])
@@ -21,12 +23,13 @@ export default function Categories () {
         const data = {name, parentCategory}
         if(editedCategory){
             data._id = editedCategory._id
-            await axios.put('/api/categories/', data)
+            await axios.put('/api/categories', data)
             setEditedCategory(null)
         }else{
             await axios.post('/api/categories', data)
         }
         setName('')
+        setParentCategory('')
         fetchCategories()
     }
 
@@ -34,6 +37,27 @@ export default function Categories () {
         setEditedCategory(category)
         setName(category.name)
         setParentCategory(category.parent?._id)
+    }
+
+    function deleteCategory (category){
+        swal.fire({
+            title: 'Are you sure?',
+            text: `Do you want to delete ${category.name}?`,
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete!',
+            confirmButtonColor: '#d55',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true,
+            
+        }).then(async result => {
+            if (result.isConfirmed) {
+                const { _id } = category
+                axios.delete('/api/categories?_id='+_id, {_id})
+                fetchCategories()
+            }
+        }).catch(error => {
+            // when promise rejected...
+        });
     }
 
     return (
@@ -48,8 +72,8 @@ export default function Categories () {
                 <select className="mb-0" value={parentCategory} onChange={e => setParentCategory(e.target.value)}>
                     <option value="">No parent category</option>
                         {categories.length > 0 && categories.map(category => (
-                    <option value={category._id}>{category.name}</option>
-                   ))}
+                    <option key={category._id} value={category._id}>{category.name}</option>
+                    ))}
                 </select>
                 <button type="submit" className="btn-primary py-1">Save</button>
             </form>
@@ -74,17 +98,20 @@ export default function Categories () {
                                     className="btn-primary mr-2">
                                         Edit
                                 </button>
-                                <button className="btn-primary">
-                                    Delete
+
+                                <button 
+                                    onClick={() => deleteCategory(category)}
+                                    className="btn-primary">
+                                        Delete
                                 </button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-        </Layout>
-        
-        
-        
+        </Layout>  
     )
 }
+export default withSwal (({swal}, ref) => (
+    <Categories swal={swal} />
+) )
