@@ -13,18 +13,18 @@ export default async function handle(req, res) {
 
     if (method === 'POST'){
         const {name, parentCategory} = req.body;
-        const categoryDoc = await Category.create({name, parent:parentCategory})
+        const categoryDoc = await Category.create({name, parent:parentCategory || undefined})
         res.json(categoryDoc)
     }
 
     if (method === 'PUT'){
         const {name, parentCategory, _id} = req.body;
 
-        if (!mongoose.Types.ObjectId.isValid(_id)) {
+        if (!mongoose.Types.ObjectId.isValid(parentCategory)) {
             res.status(400).json({ error: 'Invalid _id value' });
             return;
     }
-        const categoryDoc = await Category.updateOne({_id},{name, parent:parentCategory})
+        const categoryDoc = await Category.updateOne({_id},{name, parent:parentCategory || undefined})
         res.json (categoryDoc)
     }
 
