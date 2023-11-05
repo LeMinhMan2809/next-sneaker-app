@@ -1,5 +1,6 @@
 import mongooseConnect from "@/lib/mongoose";
 import Inventory from "@/models/Inventory";
+import Product from "@/models/Product";
 // import { WishedProduct } from "@/models/WishedProduct";
 // import { isAdminRequest } from "./auth/[...nextauth]";
 
