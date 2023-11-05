@@ -2,12 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.pagination a {
+  @apply text-black dark:text-[#7e9cb0] rounded-md;
+  float: left;
+  padding: 8px 15px;
+  text-decoration: none;
+  transition: background-color .3s;
+  margin: 0 4px;
+}
+
+.pagination a.active {
+  @apply bg-[#eef2ff] text-[#536ced] dark:bg-[#4f46e5] dark:text-[white] dark:border dark:border-[#4f46e5]
+}
+
+.pagination a:hover:not(.active) {
+  @apply bg-gray-100 text-[#6b7280] dark:bg-[#374151] dark:text-[#9ca3af]
+}
+
 input, textarea, select {
   @apply border-2 border-gray-300 rounded w-full px-1;
   @apply mb-3
 }
 
-input:focus, textarea,select:focus{
+input:focus, textarea, select:focus {
   @apply border-blue-900;
 }
 
@@ -19,11 +41,11 @@ label {
   @apply text-green-700;
 }
 
-.btn-primary{
+.btn-primary {
   @apply bg-green-800 text-white px-4 py-1 rounded-md;
 }
 
-table.basic{
+table.basic {
   @apply w-full
 }
 

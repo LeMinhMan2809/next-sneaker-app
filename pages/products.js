@@ -18,6 +18,7 @@ export default function Products() {
             <table className="basic mt-6">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Image</th>
                         <th>Brand</th>
                         <th>Title</th>
@@ -28,6 +29,7 @@ export default function Products() {
                 <tbody className="text-center">
                     {products.map(product => (
                         <tr key={product._id}>
+                            <td>{product._id}</td>
                             <td><img src={product.images[0]} className="w-[200px] h-[200px]"></img></td>
                             <td>{product.brand}</td>
                             <td>{product.title}</td>
