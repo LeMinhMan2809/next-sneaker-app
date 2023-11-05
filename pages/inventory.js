@@ -142,9 +142,9 @@ export default function Inventory() {
             <h1 className="text-4xl font-bold mb-5">Inventory</h1>
             <h2 className="font-bold text-xl mb-2">Add Product to Inventory</h2>
             <form onSubmit={saveInventory} className="flex flex-col gap-3">
-                <input type="text" className="w-[50%] dark:bg-[#1f2938] border-2 border-[#d1d5db] dark:border-[#4b5563] focus:border-[#FFA07A] dark:focus:border-[#536ced] focus:outline-none p-2 rounded-md" placeholder="Product IDs" value={productIDs} onChange={ev => setProductIDs(ev.target.value)}></input>
-                <input type="number" className="w-[50%] dark:bg-[#1f2938] border-2 border-[#d1d5db] dark:border-[#4b5563] focus:border-[#FFA07A] dark:focus:border-[#536ced] focus:outline-none p-2 rounded-md" placeholder="Quantity" value={quantity} onChange={ev => setQuantity(ev.target.value)}></input>
-                <input type="number" className="w-[50%] dark:bg-[#1f2938] border-2 border-[#d1d5db] dark:border-[#4b5563] focus:border-[#FFA07A] dark:focus:border-[#536ced] focus:outline-none p-2 rounded-md" placeholder="Price" value={price} onChange={ev => setPrice(ev.target.value)}></input>
+                <input type="text" className="w-[50%] border-2 border-[#4b5563] focus:border-[#536ced] focus:outline-none p-2 rounded-md" placeholder="Product IDs" value={productIDs} onChange={ev => setProductIDs(ev.target.value)}></input>
+                <input type="number" className="w-[50%] border-2 border-[#4b5563] focus:border-[#536ced] focus:outline-none p-2 rounded-md" placeholder="Quantity" value={quantity} onChange={ev => setQuantity(ev.target.value)}></input>
+                <input type="number" className="w-[50%] border-2 border-[#4b5563] focus:border-[#536ced] focus:outline-none p-2 rounded-md" placeholder="Price" value={price} onChange={ev => setPrice(ev.target.value)}></input>
                 <button type="submit" className="bg-[#4f46e5] p-2 px-4 rounded-lg text-white w-fit">Save</button>
             </form>
             <div className="overflow-auto">

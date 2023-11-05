@@ -17,11 +17,11 @@
 }
 
 .pagination a.active {
-  @apply bg-[#eef2ff] text-[#536ced] dark:bg-[#4f46e5] dark:text-[white] dark:border dark:border-[#4f46e5]
+  @apply bg-[#eef2ff] text-[#536ced]
 }
 
 .pagination a:hover:not(.active) {
-  @apply bg-gray-100 text-[#6b7280] dark:bg-[#374151] dark:text-[#9ca3af]
+  @apply bg-gray-100 text-[#6b7280]
 }
 
 input, textarea, select {
