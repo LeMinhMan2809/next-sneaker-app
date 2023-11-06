@@ -3,28 +3,34 @@ import axios from "axios"
 import { useRouter } from "next/router";
 import Spinner from "./Spinner";
 import { ReactSortable } from "react-sortablejs";
-
-export default function ProductForm({ _id, brand: existingBrand, title: existingTitle, description: existingDescription, images: existingImages }) {
+import { useEffect } from "react";
+export default function ProductForm({ _id, brand: existingBrand, title: existingTitle, description: existingDescription, images: existingImages, category: assignedCategory }) {
 
     const [brand, setBrand] = useState(existingBrand || '')
     const [title, setTitle] = useState(existingTitle || '')
     const [description, setDescription] = useState(existingDescription || '')
     const [images, setImages] = useState(existingImages || [])
-
     const [goToProducts, setGoToProducts] = useState(false)
     const [isUploading, setIsUploading] = useState(false)
+    const [category, setCategory] = useState(assignedCategory ||'')
+    const [categories, setCategories] = useState([])
     const router = useRouter()
+
+    useEffect(() => {
+       axios.get('/api/categories').then(result => {
+           setCategories(result.data)
+       }) 
+    }, [])
+
     async function saveProduct(e) {
         e.preventDefault()
-        const data = { brand, title, description, images }
+        const data = { brand, title, description, images, category }
         if (_id) {
             //Update
             await axios.put('/api/products/', { ...data, _id })
         } else {
             //Create
-            const data = { brand, title, description }
             await axios.post('/api/products', data)
-
         }
         setGoToProducts(true)
     }
@@ -60,6 +66,15 @@ export default function ProductForm({ _id, brand: existingBrand, title: existing
 
             <label>Product name</label>
             <input type="text" placeholder="Product name" value={title} onChange={e => setTitle(e.target.value)} />
+
+            <label>Category</label>
+
+            <select value={category} onChange={e => setCategory(e.target.value)}> 
+                <option>Uncategorized</option>
+                {categories.length > 0 && categories.map(c => (
+                    <option value={c._id}>{c.name}</option>
+                ))}
+            </select>
 
             <label>Product description</label>
             <input type="text" placeholder="Product description" value={description} onChange={e => setDescription(e.target.value)} />

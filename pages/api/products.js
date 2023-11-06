@@ -5,6 +5,8 @@ export default async function handle (req, res){
     const { method } = req
     await mongooseConnect()
 
+    await isAdminRequest(req, res)
+
     if (method === 'GET'){
         //check if id exists
         if (req.query?.id) {
@@ -16,16 +18,16 @@ export default async function handle (req, res){
 
 
     if (method === 'POST'){
-        const {brand, title, description, images} = req.body
+        const {brand, title, description, images, category} = req.body
         const productDoc = await Product.create({
-            brand, title, description, images,
+            brand, title, description, images, category,
         })
         res.json (productDoc)
     }
 
     if (method === 'PUT'){
-        const {brand, title, description,images,_id} = req.body
-        await Product.updateOne({_id}, {brand, title, description,images})
+        const {brand, title, description,images,category,_id} = req.body
+        await Product.updateOne({_id}, {brand, title, description,images,category})
         res.json(true)
     }
 
