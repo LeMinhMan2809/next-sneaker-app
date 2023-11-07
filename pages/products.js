@@ -30,7 +30,7 @@ export default function Products() {
                     {products.map(product => (
                         <tr key={product._id}>
                             <td>{product._id}</td>
-                            <td><img src={product.images[0]} className="w-[200px] h-[200px]"></img></td>
+                            <td className="flex justify-center border-none"><img src={product.images[0]} className="w-[200px] h-[200px]"></img></td>
                             <td>{product.brand}</td>
                             <td>{product.title}</td>
                             <td>{product.description}</td>

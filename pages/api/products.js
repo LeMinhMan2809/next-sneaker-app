@@ -1,11 +1,12 @@
 import { Product } from "@/models/Product"
 import mongooseConnect from "@/lib/mongoose"
+import { isAdminRequest } from "@/pages/api/auth/[...nextauth]";
 
 export default async function handle (req, res){
     const { method } = req
     await mongooseConnect()
 
-    await isAdminRequest(req, res)
+    // await isAdminRequest(req, res)
 
     if (method === 'GET'){
         //check if id exists
