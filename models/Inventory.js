@@ -2,8 +2,8 @@ const { Schema, default: mongoose } = require("mongoose");
 
 const InventorySchema = new Schema({
     product: { type: mongoose.Types.ObjectId, ref: 'Product' },
-    quantity: { type: Number, default: 0 },
-    price: { type: Number, default: 0 }
+    totalQuantity: { type: Number, required: true },
+    size: [{ type: Object }],
 }, {
     timestamps: true,
 })
