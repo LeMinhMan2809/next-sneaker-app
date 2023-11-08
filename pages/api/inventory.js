@@ -1,14 +1,10 @@
 import mongooseConnect from "@/lib/mongoose";
 import Inventory from "@/models/Inventory";
 import Product from "@/models/Product";
-import ReactPaginate from "react-paginate";
-// import { WishedProduct } from "@/models/WishedProduct";
-// import { isAdminRequest } from "./auth/[...nextauth]";
 
 export default async function handle(req, res) {
     const { method } = req;
     await mongooseConnect();
-    // await isAdminRequest(req, res);
 
     if (method === "GET") {
         if (req.query?.productIDs) {
@@ -20,20 +16,21 @@ export default async function handle(req, res) {
     }
 
     if (method === "POST") {
-        const { productIDs, quantity, price } = req.body;
+        const { productIDs, total, sizes } = req.body;
         const inventoryDoc = await Inventory.create({
             product: productIDs,
-            quantity,
-            price,
+            totalQuantity: total,
+            size: sizes,
         });
         res.json(inventoryDoc);
     }
 
     if (method === "PUT") {
-        const { id, newQuantity, newPrice } = req.body;
-        await Inventory.updateOne({ _id: id }, {
-            quantity: newQuantity,
-            price: newPrice,
+        const { _id, productIDs, total, sizes } = req.body;
+        await Inventory.updateOne({ _id: _id }, {
+            product: productIDs,
+            totalQuantity: total,
+            size: sizes,
         });
         res.json(true);
     }
