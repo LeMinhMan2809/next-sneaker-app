@@ -1,6 +1,7 @@
 import mongooseConnect from "@/lib/mongoose";
 import Inventory from "@/models/Inventory";
 import Product from "@/models/Product";
+import ReactPaginate from "react-paginate";
 // import { WishedProduct } from "@/models/WishedProduct";
 // import { isAdminRequest } from "./auth/[...nextauth]";
 
