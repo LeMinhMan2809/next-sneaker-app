@@ -1,3 +1,4 @@
+import Category from "@/models/Category";
 import { Product } from "@/models/Product"
 import mongooseConnect from "@/lib/mongoose"
 import { isAdminRequest } from "@/pages/api/auth/[...nextauth]";

@@ -1,6 +1,6 @@
 import mongooseConnect from "@/lib/mongoose";
 import mongoose from "mongoose";
-import { Category } from "@/models/Category";
+import Category from "@/models/Category";
 import { getServerSession } from "next-auth";
 
 
