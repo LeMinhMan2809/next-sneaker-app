@@ -13,6 +13,7 @@ export default function Inventory() {
     const [allInventory, setAllInventory] = useState([])
     const [searchProduct, setSearchProduct] = useState("")
     const [isLoading, setIsLoading] = useState(false)
+    const [price, setPrice] = useState(0)
 
     const [productIDs, setProductIDs] = useState('')
     const [sizes, setSizes] = useState([])
@@ -32,6 +33,7 @@ export default function Inventory() {
         setIsLoading(true)
         axios.get('/api/inventory').then(response => {
             setInventory(response.data)
+            setPrice(response.data.price)
             setAllInventory(response.data)
             setIsLoading(false)
         })
@@ -44,7 +46,7 @@ export default function Inventory() {
 
     async function saveInventory(ev) {
         ev.preventDefault()
-        if (!productIDs || sizes.length === 0) {
+        if (!productIDs || sizes.length === 0 || !price) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -53,7 +55,7 @@ export default function Inventory() {
             return
         }
         for (let i = 0; i < sizes.length; i++) {
-            if (!sizes[i].name || !sizes[i].quantity || !sizes[i].price) {
+            if (!sizes[i].name || !sizes[i].quantity) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -61,11 +63,11 @@ export default function Inventory() {
                 })
                 return
             }
-            if (sizes[i].quantity < 0 || sizes[i].price < 0) {
+            if (sizes[i].quantity < 0) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Quantity and Price is invalid!',
+                    text: 'Quantity is invalid!',
                 })
                 return
             }
@@ -97,7 +99,7 @@ export default function Inventory() {
             total += sizes[i].quantity
         }
 
-        const data = { productIDs, total, sizes }
+        const data = { productIDs, total, sizes, price }
         let newInventory = null
         if (editedSize) {
             data._id = editedSize._id
@@ -110,6 +112,7 @@ export default function Inventory() {
         if (newInventory.data) {
             setProductIDs('')
             setSizes([])
+            setPrice(0)
             setEditedSize(null)
             setIsLoading(true)
             axios.get('/api/inventory').then(response => {
@@ -130,6 +133,7 @@ export default function Inventory() {
         setProductIDs(inventory.product._id)
         setEditedSize(inventory)
         setSizes(inventory.size)
+        setPrice(inventory.price)
     }
 
     async function getRemove(id, productID, productName) {
@@ -163,7 +167,7 @@ export default function Inventory() {
 
     function addSize() {
         setSizes(prev => {
-            return [...prev, { name: '', quantity: 0, price: 0 }]
+            return [...prev, { name: '', quantity: 0 }]
         })
     }
 
@@ -190,14 +194,6 @@ export default function Inventory() {
             return sizes
         })
     }
-    function handleSizePriceChange(index, size, value) {
-        const newPrice = parseFloat(value) || 0.0;
-        setSizes(prev => {
-            const sizes = [...prev]
-            sizes[index].price = newPrice
-            return sizes
-        })
-    }
 
     return (
         <Layout>
@@ -205,12 +201,12 @@ export default function Inventory() {
             <h2 className="font-bold text-xl mb-2">{editedSize ? 'Edit Inventory' : 'Add Product to Inventory'}</h2>
             <form onSubmit={saveInventory} className="flex flex-col gap-3">
                 <input type="text" className="w-[50%] border-2 border-[#4b5563] focus:border-[#536ced] focus:outline-none p-2 rounded-md" placeholder="Product IDs" value={productIDs} onChange={ev => setProductIDs(ev.target.value)}></input>
+                <input type="number" className="w-[50%] border-2 border-[#4b5563] focus:border-[#536ced] focus:outline-none p-2 rounded-md" placeholder="Price" value={price} onChange={ev => setPrice(ev.target.value)} />
                 <button type="button" onClick={addSize} className="bg-white hover:bg-gray-100 border-2 border-[#d1d5db] text-sm py-2 px-4 rounded-md flex justify-center">Add new size</button>
                 {sizes.length > 0 && sizes.map((size, index) => (
                     <div key={index} className="flex gap-2 mt-2">
                         <input type="text" className="w-full border-2 border-[#ds1d5db] focus:outline-none p-2 rounded-md" value={size.name} onChange={ev => handleSizeNameChange(index, size, ev.target.value)} placeholder="Size"></input>
                         <input type="number" className="w-full border-2 border-[#d1d5db] focus:outline-none p-2 rounded-md" value={size.quantity} onChange={ev => handleSizeQuantityChange(index, size, ev.target.value)} placeholder="Quantity"></input>
-                        <input type="number" className="w-full border-2 border-[#d1d5db] focus:outline-none p-2 rounded-md" value={size.price} onChange={ev => handleSizePriceChange(index, size, ev.target.value)} placeholder="Price"></input>
                         <button type="button" className="bg-rose-600 p-1 rounded-lg text-white" onClick={() => removeSize(index)}>Remove</button>
                     </div>
                 ))}
@@ -226,7 +222,7 @@ export default function Inventory() {
                         <col style={{ width: '20%' }} />
                         <col style={{ width: '40%' }} />
                         <col style={{ width: '20%' }} />
-                        {/* <col style={{ width: '10%' }} /> */}
+                        <col style={{ width: '10%' }} />
                         <col style={{ width: '10%' }} />
                         <col style={{ width: '10%' }} />
                     </colgroup>
@@ -234,7 +230,7 @@ export default function Inventory() {
                         <tr>
                             <td>Product IDs</td>
                             <td>Product Name</td>
-                            {/* <td>Sizes</td> */}
+                            <td>Price</td>
                             <td>Quantity</td>
                             <td colSpan={2} className="text-center">Action</td>
                         </tr>
@@ -249,27 +245,29 @@ export default function Inventory() {
                                 </td>
                             </tr>
                         )}
-                        {currentItems.map((inventory, index) => (
-                            <React.Fragment key={index}>
-                                <tr key={inventory._id}>
-                                    <td>{inventory.product._id}</td>
-                                    <td className="">
-                                        <div className="rounded-md flex gap-3 items-center">
-                                            <img className="bg-white w-[80px] rounded-md" src={inventory.product.images[0]} />
-                                            <p className="text-xl">{inventory.product.title}</p>
-                                        </div>
-                                    </td>
-                                    {/* <td>{inventory.size.name}</td> */}
-                                    <td>{inventory.totalQuantity}</td>
-                                    <td className="pl-4 py-2 whitespace-nowrap">
-                                        <button className="bg-emerald-400 py-3 px-4 rounded-md text-white" onClick={() => getUpdate(inventory)}>Update</button>
-                                    </td>
-                                    <td className="pl-4 py-2 whitespace-nowrap">
-                                        <button className="bg-rose-500 py-3 px-4 rounded-md text-white" onClick={() => getRemove(inventory._id, inventory.product._id, inventory.product.title)}>Remove</button>
-                                    </td>
-                                </tr>
-                            </React.Fragment>
-                        ))}
+                        {currentItems.map((inventory, index) => {
+                            return (
+                                <React.Fragment key={index}>
+                                    <tr key={inventory._id}>
+                                        <td>{inventory.product._id}</td>
+                                        <td className="">
+                                            <div className="rounded-md flex gap-3 items-center">
+                                                <img className="bg-white w-[80px] rounded-md" src={inventory.product.images[0]} />
+                                                <p className="text-xl">{inventory.product.title}</p>
+                                            </div>
+                                        </td>
+                                        <td>{inventory.price}</td>
+                                        <td>{inventory.totalQuantity}</td>
+                                        <td className="pl-4 py-2 whitespace-nowrap">
+                                            <button className="bg-emerald-400 py-3 px-4 rounded-md text-white" onClick={() => getUpdate(inventory)}>Update</button>
+                                        </td>
+                                        <td className="pl-4 py-2 whitespace-nowrap">
+                                            <button className="bg-rose-500 py-3 px-4 rounded-md text-white" onClick={() => getRemove(inventory._id, inventory.product._id, inventory.product.title)}>Remove</button>
+                                        </td>
+                                    </tr>
+                                </React.Fragment>
+                            )
+                        })}
                     </tbody>
                 </table>
             </div>

@@ -16,21 +16,23 @@ export default async function handle(req, res) {
     }
 
     if (method === "POST") {
-        const { productIDs, total, sizes } = req.body;
+        const { productIDs, total, sizes, price } = req.body;
         const inventoryDoc = await Inventory.create({
             product: productIDs,
             totalQuantity: total,
             size: sizes,
+            price: price,
         });
         res.json(inventoryDoc);
     }
 
     if (method === "PUT") {
-        const { _id, productIDs, total, sizes } = req.body;
+        const { _id, productIDs, total, sizes, price } = req.body;
         await Inventory.updateOne({ _id: _id }, {
             product: productIDs,
             totalQuantity: total,
             size: sizes,
+            price: price,
         });
         res.json(true);
     }
