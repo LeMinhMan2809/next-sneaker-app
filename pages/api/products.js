@@ -6,8 +6,6 @@ export default async function handle(req, res) {
     const { method } = req
     await mongooseConnect()
 
-    // await isAdminRequest(req, res)
-
     if (method === 'GET') {
         if (req.query?.id) {
             if (req.query.id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -17,22 +15,22 @@ export default async function handle(req, res) {
                 res.json(null);
             }
         } else {
-            res.json(await Product.find());
+            res.json(await Product.find().populate('category'));
         }
     }
 
 
     if (method === 'POST') {
-        const { brand, title, description, images, category } = req.body
+        const { title, description, images, category } = req.body
         const productDoc = await Product.create({
-            brand, title, description, images, category,
+            title, description, images, category,
         })
         res.json(productDoc)
     }
 
     if (method === 'PUT') {
-        const { brand, title, description, images, category, _id } = req.body
-        await Product.updateOne({ _id }, { brand, title, description, images, category })
+        const { title, description, images, category, _id } = req.body
+        await Product.updateOne({ _id }, { title, description, images, category })
         res.json(true)
     }
 

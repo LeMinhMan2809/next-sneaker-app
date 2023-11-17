@@ -11,7 +11,7 @@ export default function Products() {
             setProducts(response.data)
         })
     }, [])
-
+    // console.log (products)
     return (
         <Layout>
             <Link className='bg-green-700 text-white py-1 px-2 rounded-md' href={'./products/new'}>Add new product</Link>
@@ -20,7 +20,7 @@ export default function Products() {
                     <tr>
                         <th>ID</th>
                         <th>Image</th>
-                        <th>Brand</th>
+                        <th>Categories</th>
                         <th>Title</th>
                         <th>Description</th>
                         <th>Action</th>
@@ -31,7 +31,7 @@ export default function Products() {
                         <tr key={product._id}>
                             <td>{product._id}</td>
                             <td className="flex justify-center border-none"><img src={product.images[0]} className="w-[200px] h-[200px]"></img></td>
-                            <td>{product.brand}</td>
+                            <td>{product.category.name}</td>
                             <td>{product.title}</td>
                             <td>{product.description}</td>
                             <td>

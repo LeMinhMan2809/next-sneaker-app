@@ -226,6 +226,7 @@ export default function Inventory() {
                         <col style={{ width: '20%' }} />
                         <col style={{ width: '40%' }} />
                         <col style={{ width: '20%' }} />
+                        {/* <col style={{ width: '10%' }} /> */}
                         <col style={{ width: '10%' }} />
                         <col style={{ width: '10%' }} />
                     </colgroup>
@@ -233,6 +234,7 @@ export default function Inventory() {
                         <tr>
                             <td>Product IDs</td>
                             <td>Product Name</td>
+                            {/* <td>Sizes</td> */}
                             <td>Quantity</td>
                             <td colSpan={2} className="text-center">Action</td>
                         </tr>
@@ -257,6 +259,7 @@ export default function Inventory() {
                                             <p className="text-xl">{inventory.product.title}</p>
                                         </div>
                                     </td>
+                                    {/* <td>{inventory.size.name}</td> */}
                                     <td>{inventory.totalQuantity}</td>
                                     <td className="pl-4 py-2 whitespace-nowrap">
                                         <button className="bg-emerald-400 py-3 px-4 rounded-md text-white" onClick={() => getUpdate(inventory)}>Update</button>

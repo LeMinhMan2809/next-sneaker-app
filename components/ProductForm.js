@@ -4,9 +4,8 @@ import { useRouter } from "next/router";
 import Spinner from "./Spinner";
 import { ReactSortable } from "react-sortablejs";
 import { useEffect } from "react";
-export default function ProductForm({ _id, brand: existingBrand, title: existingTitle, description: existingDescription, images: existingImages, category: assignedCategory }) {
+export default function ProductForm({ _id, title: existingTitle, description: existingDescription, images: existingImages, category: assignedCategory }) {
 
-    const [brand, setBrand] = useState(existingBrand || '')
     const [title, setTitle] = useState(existingTitle || '')
     const [description, setDescription] = useState(existingDescription || '')
     const [images, setImages] = useState(existingImages || [])
@@ -24,7 +23,7 @@ export default function ProductForm({ _id, brand: existingBrand, title: existing
 
     async function saveProduct(e) {
         e.preventDefault()
-        const data = { brand, title, description, images, category }
+        const data = { title, description, images, category }
         if (_id) {
             //Update
             await axios.put('/api/products/', { ...data, _id })
@@ -61,9 +60,6 @@ export default function ProductForm({ _id, brand: existingBrand, title: existing
     return (
         <form onSubmit={saveProduct} action="" method="POST">
 
-            <label>Product brand</label>
-            <input type="text" placeholder="Product brand" value={brand} onChange={e => setBrand(e.target.value)} />
-
             <label>Product name</label>
             <input type="text" placeholder="Product name" value={title} onChange={e => setTitle(e.target.value)} />
 
@@ -77,7 +73,7 @@ export default function ProductForm({ _id, brand: existingBrand, title: existing
             </select>
 
             <label>Product description</label>
-            <input type="text" placeholder="Product description" value={description} onChange={e => setDescription(e.target.value)} />
+            <textarea rows="5" placeholder="Product description" value={description} onChange={e => setDescription(e.target.value)} />
 
             <label className="pb-2">Photos</label>
             <div className="mt-2 flex flex-wrap gap-1">
