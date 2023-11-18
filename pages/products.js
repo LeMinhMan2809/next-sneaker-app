@@ -30,10 +30,10 @@ export default function Products() {
                     {products.map(product => (
                         <tr key={product._id}>
                             <td>{product._id}</td>
-                            <td className="flex justify-center border-none"><img src={product.images[0]} className="w-[200px] h-[200px]"></img></td>
+                            <td className="flex justify-center border-none"><img src={product.images[0]} className="w-[150px] h-[150px]"></img></td>
                             <td>{product.category.name}</td>
                             <td>{product.title}</td>
-                            <td>{product.description}</td>
+                            <td className="w-[450px]">{product.description}</td>
                             <td>
                                 <Link href={'./products/edit/' + product._id}>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 pt-1">
