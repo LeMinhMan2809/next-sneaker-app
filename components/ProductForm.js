@@ -100,7 +100,7 @@ export default function ProductForm({ _id, title: existingTitle, description: ex
             </div>
 
 
-            <button type="submit" className="btn-primary">Save</button>
+            <button type="submit" className="btn-primary mt-4">Save</button>
         </form>
     )
 }

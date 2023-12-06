@@ -5,27 +5,19 @@ import { CategoryScale, Chart as ChartJS, Filler, Legend, LineElement, LinearSca
 import { Line } from "react-chartjs-2";
 
 export default function HomeStats() {
-    const [orders, setOrders] = useState([])
     const [orderDetail, setOrderDetail] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     const months = monthNames[new Date().getMonth()]
     const years = new Date().getFullYear()
 
-    // useEffect(() => {
-    //     setIsLoading(true);
-    //     axios.get('/api/orders').then(res => {
-    //         setOrders(res.data.filter(order => {
-    //             return order.paid === true
-    //         }));
-    //         axios.get('/api/orderdetails').then(res => {
-    //             setOrderDetail(res.data.filter(od => {
-    //                 return od.order.paid === true
-    //             }));
-    //         })
-    //         setIsLoading(false);
-    //     });
-    // }, []);
+    useEffect(() => {
+        setIsLoading(true);
+        axios.get('/api/orders').then(res => {
+            setOrderDetail(res.data);
+            setIsLoading(false);
+        });
+    }, []);
 
     function monthDataForCurrentYear(month) {
         const data = orderDetail.filter(o => {

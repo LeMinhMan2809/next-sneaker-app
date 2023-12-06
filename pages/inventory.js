@@ -40,7 +40,7 @@ export default function Inventory() {
     }, [])
 
     useEffect(() => {
-        setInventory(allInventory.filter(inventory => inventory.product._id.toLowerCase().includes(searchProduct.toLowerCase())))
+        setInventory(allInventory.filter(inventory => inventory.product?._id.toLowerCase().includes(searchProduct.toLowerCase())))
         setItemOffset(0)
     }, [searchProduct])
 
@@ -249,11 +249,11 @@ export default function Inventory() {
                             return (
                                 <React.Fragment key={index}>
                                     <tr key={inventory._id}>
-                                        <td>{inventory.product._id}</td>
+                                        <td>{inventory.product?._id}</td>
                                         <td className="">
                                             <div className="rounded-md flex gap-3 items-center">
-                                                <img className="bg-white w-[80px] rounded-md" src={inventory.product.images[0]} />
-                                                <p className="text-xl">{inventory.product.title}</p>
+                                                <img className="bg-white w-[80px] rounded-md" src={inventory.product?.images[0]} />
+                                                <p className="text-xl">{inventory.product?.title}</p>
                                             </div>
                                         </td>
                                         <td>{inventory.price}</td>
@@ -262,7 +262,7 @@ export default function Inventory() {
                                             <button className="bg-emerald-400 py-3 px-4 rounded-md text-white" onClick={() => getUpdate(inventory)}>Update</button>
                                         </td>
                                         <td className="pl-4 py-2 whitespace-nowrap">
-                                            <button className="bg-rose-500 py-3 px-4 rounded-md text-white" onClick={() => getRemove(inventory._id, inventory.product._id, inventory.product.title)}>Remove</button>
+                                            <button className="bg-rose-500 py-3 px-4 rounded-md text-white" onClick={() => getRemove(inventory._id, inventory.product?._id, inventory.product?.title)}>Remove</button>
                                         </td>
                                     </tr>
                                 </React.Fragment>
